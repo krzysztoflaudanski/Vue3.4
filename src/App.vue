@@ -1,12 +1,14 @@
-<template>
-  <nav>
-    <router-link to="/">Home</router-link> |
-    <router-link to="/about">About</router-link>
-  </nav>
-  <router-view/>
-</template>
+<template><router-view /></template>
+
+<script>
+import './styles/global.scss'
+export default {
+  name: 'App'
+}
+</script>
 
 <style lang="scss">
+
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
