@@ -1,6 +1,6 @@
 <template>
 <div class="photo-summary p-shadow-4">
-    <Card style="width: 220px; overflow: hidden; position: relative;">
+    <Card style="width: 180px; overflow: hidden; position: relative;">
         <template #header>
             <div class="image-container">
                 <img alt="user header" :src="image" style="object-fit: cover; width: 100%; height: 400px;" />
@@ -8,7 +8,7 @@
             </div>
         </template>
         <template #title>
-            <div class="card-title">
+            <div class="card-title" style="height:40px">
                 {{ title }}
             </div>
         </template>
@@ -85,7 +85,7 @@ export default {
 .star-icon {
     position: absolute;
     top: 10px;
-    right: 10px;
+    right: 20px;
     font-size: 15px;
     color: white;
     background-color: transparent;

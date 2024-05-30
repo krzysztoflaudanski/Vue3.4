@@ -3,6 +3,11 @@ import axios from 'axios';
 import { apiUrl } from './../../config';
 
 export default createStore({
+  photosRequest: {
+    pending: false,
+    error: false,
+    success: false
+  },
   state: {
     categories: [],
     photos: [],
@@ -18,6 +23,30 @@ export default createStore({
     },
     UPDATE_PHOTOS(state, data) {
       state.photos = data;
+    },
+    ADD_PHOTOS(state, data) {
+      state.photos = [...state.photos, ...data]
+    },
+    START_PHOTOS_REQUEST(state) {
+      state.photosRequest = {
+        pending: true,
+        error: false,
+        success: false
+      }
+    },
+    END_PHOTOS_REQUEST(state) {
+      state.photosRequest = {
+        pending: false,
+        error: false,
+        success: true
+      }
+    },
+    ERROR_PHOTOS_REQUEST(state) {
+      state.photosRequest = {
+        pending: false,
+        error: true,
+        success: false
+      }
     }
   },
   actions: {
@@ -30,12 +59,32 @@ export default createStore({
       }
     },
     async fetchPhotos({ commit }, page) {
-      const res = await axios.get(`${apiUrl}/photos/${page}`)
-      commit('UPDATE_PHOTOS', res.data)
+      try {
+        commit('START_PHOTOS_REQUEST')
+        const res = await axios.get(`${apiUrl}/photos/${page}`)
+        await new Promise((resolve, reject) => { setTimeout(resolve, 2000) })
+        commit('END_PHOTOS_REQUEST')
+
+        if (page > 1) commit('ADD_PHOTOS', res.data)
+        else commit('UPDATE_PHOTOS', res.data)
+      } catch (err) {
+        commit('ERROR_PHOTOS_REQUEST')
+      }
     },
     async fetchCategoryPhotos({ commit }, { category, page }) {
-      const res = await axios.get(`${apiUrl}/photos/${category}/${page}`)
-      commit('UPDATE_PHOTOS', res.data)
+      try {
+        commit('START_PHOTOS_REQUEST');
+        const res = await axios.get(`${apiUrl}/photos/${category}/${page}`);
+        commit('END_PHOTOS_REQUEST');
+
+        if (page > 1) {
+          commit('ADD_PHOTOS', res.data);
+        } else {
+          commit('UPDATE_PHOTOS', res.data);
+        }
+      } catch (err) {
+        commit('ERROR_PHOTOS_REQUEST');
+      }
     }
   },
   modules: {}
