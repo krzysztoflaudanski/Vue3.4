@@ -4,7 +4,11 @@
   <app-header />
 
   <main>
-    <router-view />
+    <router-view v-slot="{ Component }">
+      <SlideFadeAnimation class="animate__faster">
+        <component :is="Component" :key="$route.fullPath" />
+      </SlideFadeAnimation>
+    </router-view>
   </main>
 
   <app-footer />
@@ -15,10 +19,20 @@
 <script>
 import AppHeader from '@/components/layout/theHeader'
 import AppFooter from '@/components/layout/theFooter'
+import { mapActions } from 'vuex';
+import SlideFadeAnimation from './components/layout/SlideFadeAnimation.vue';
 
 export default {
   name: 'App',
-  components: { AppHeader, AppFooter }
+  components: { AppHeader, AppFooter, SlideFadeAnimation },
+  methods: {
+    ...mapActions([
+      'fetchCategories'
+    ])
+  },
+  created() {
+    this.fetchCategories()
+  }
 }
 </script>
 
