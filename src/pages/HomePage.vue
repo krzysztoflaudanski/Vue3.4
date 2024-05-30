@@ -1,11 +1,14 @@
 <template>
 <div class="home">
-  HomePage
+  Photos
 </div>
+<PhotosCatalog></PhotosCatalog>
 </template>
 
 <script>
+import PhotosCatalog from '@/components/featured/PhotosCatalog.vue';
+
 export default {
   name: 'HomePage',
-}
-</script>
+  components: { PhotosCatalog}
+}  </script>

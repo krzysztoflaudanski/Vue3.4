@@ -27,11 +27,14 @@ export default {
   components: { AppHeader, AppFooter, SlideFadeAnimation },
   methods: {
     ...mapActions([
-      'fetchCategories'
+      'fetchCategories', 'fetchPhotos', 'fetchCategoryPhotos'
     ])
   },
   created() {
     this.fetchCategories()
+    this.fetchPhotos()
+    if (!this.category) this.fetchPhotos(1)
+    else this.fetchCategoryPhotos({ category: this.category, page: 1 })
   }
 }
 </script>

@@ -1,7 +1,7 @@
 <template>
 <footer class="mr-2 ml-2">
     <div class="flex justify-content-between flex-wrap">
-    <div class="flex align-items-center justify-content-center">2020 All rights reserved
+    <div class="flex align-items-center justify-content-center">2024 All rights reserved
     </div>
     <div class="flex align-items-center justify-content-center ">We have {{ categoriesAmount }} categories!</div>
 </div>
