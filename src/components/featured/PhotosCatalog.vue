@@ -37,37 +37,36 @@ export default {
         })
     },
 
-created() {
-    this.loadPhotos();
-},
-methods: {
-        ...mapActions(['addVote', 'fetchCategoryPhotos']),
+    created() {
+        this.loadPhotos();
+    },
+    methods: {
+        ...mapActions('photos', ['addVote', 'fetchCategoryPhotos']),
         loadPhotos() {
-        this.currentPage++;
+            this.currentPage++;
 
-        if (this.category) {
-            console.log(this.category)
-            this.$store.dispatch('fetchCategoryPhotos', { category: this.category, page: this.currentPage });
-        } else {
-            this.$store.dispatch('fetchPhotos', this.currentPage);
+            if (this.category) {
+                this.$store.dispatch('fetchCategoryPhotos', { category: this.category, page: this.currentPage });
+            } else {
+                this.$store.dispatch('fetchPhotos', this.currentPage);
+            }
+        },
+        prepareScroll() {
+            this.$refs.catalog.addEventListener('scroll', () => { this.handleScroll() })
+        },
+        handleScroll() {
+            const elem = this.$refs.catalog
+            const bottomOfWindow = Math.ceil(elem.scrollTop) >= (elem.scrollHeight - elem.offsetHeight)
+
+            if (bottomOfWindow) this.loadPhotos()
+        },
+        handleVote(photoId) {
+            this.addVote(photoId);
         }
     },
-    prepareScroll() {
-        this.$refs.catalog.addEventListener('scroll', () => { this.handleScroll() })
-    },
-    handleScroll() {
-        const elem = this.$refs.catalog
-        const bottomOfWindow = Math.ceil(elem.scrollTop) >= (elem.scrollHeight - elem.offsetHeight)
-
-        if (bottomOfWindow) this.loadPhotos()
-    },
-    handleVote(photoId) {
-        this.addVote(photoId);
+    components: {
+        PhotoList, ProgressSpinner
     }
-},
-components: {
-    PhotoList, ProgressSpinner
-}
 }
 </script>
 

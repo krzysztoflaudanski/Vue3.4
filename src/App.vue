@@ -26,8 +26,10 @@ export default {
   name: 'App',
   components: { AppHeader, AppFooter, SlideFadeAnimation },
   methods: {
-    ...mapActions([
-      'fetchCategories', 'fetchPhotos', 'fetchCategoryPhotos'
+    ...mapActions('categories', [
+      'fetchCategories'
+    ]), ...mapActions('photos', [
+      'fetchPhotos', 'fetchCategoryPhotos'
     ])
   },
   created() {
@@ -38,7 +40,6 @@ export default {
   }
 }
 </script>
-
 
 <style lang="scss">
 #app {

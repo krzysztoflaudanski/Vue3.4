@@ -2,6 +2,7 @@ import axios from 'axios';
 import { apiUrl } from './../../../config';
 
 export default {
+  namespaced: true,
   state: {
     categories: []
   },

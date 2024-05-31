@@ -12,11 +12,12 @@
 import { mapGetters, mapMutations } from 'vuex';
 
 export default {
-    name: 'AppFooter', computed: {
-        ...mapGetters({
-            categoriesAmount: 'categoriesAmount'
-        })
-    }
+    name: 'AppFooter', 
+    computed: {
+  ...mapGetters('categories', {
+    categoriesAmount: 'categoriesAmount'
+  })
+}
 }
 </script>
 <style>
