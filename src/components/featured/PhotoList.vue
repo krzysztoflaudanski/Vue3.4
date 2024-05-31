@@ -1,8 +1,8 @@
 <template>
 <div class="photo-list p-grid">
-    <PhotoSummary class="sm:col-6 lg:col-2 md:col-3" v-for="photo in photos" :key="photo._id" :title="photo.title"
-        :description="photo.description" :author="photo.author" :src="photo.src" :votes="photo.votes"
-        :category="photo.category" />
+    <PhotoSummary class="sm:col-6 lg:col-2 md:col-3" v-for="photo in photos" :key="photo._id" :id="photo._id"
+        :title="photo.title" :description="photo.description" :author="photo.author" :src="photo.src"
+        :votes="photo.votes" :category="photo.category" @vote="handleVote" />
 </div>
 </template>
 
@@ -18,6 +18,11 @@ export default {
         photos: {
             type: Array,
             required: true
+        }
+    },
+    methods: {
+        handleVote(photoId) {
+            this.$emit('vote', photoId);
         }
     }
 };

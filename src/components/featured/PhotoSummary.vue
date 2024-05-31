@@ -3,7 +3,7 @@
     <Card style="width: 180px; overflow: hidden; position: relative;">
         <template #header>
             <div class="image-container">
-                <div class="layer">
+                <div class="layer" @click="handleVote">
                     <i class="pi pi-star center-star-icon"></i>
                 </div>
                 <img alt="user header" :src="image" style="object-fit: cover; width: 100%; height: 400px;" />
@@ -37,6 +37,10 @@ import Card from 'primevue/card';
 export default {
     name: 'PhotoSummary',
     props: {
+        id: {
+            type: String,
+            required: true
+        },
         title: {
             type: String,
             required: true
@@ -65,6 +69,16 @@ export default {
     computed: {
         image() {
             return `${imagesUrl}${this.src}`
+        }
+    },
+    methods: {
+        handleVote() {
+            this.$emit('vote', this.id);
+        }
+    },
+    watch: {
+        votes(newVotes) {
+            // Refresh UI when votes prop changes
         }
     },
     components: {
@@ -98,6 +112,7 @@ export default {
     display: flex;
     justify-content: center;
     align-items: center;
+    cursor: pointer;
 }
 
 .image-container:hover .layer {
@@ -111,7 +126,6 @@ export default {
     font-size: 15px;
     color: white;
     background-color: transparent;
-    cursor: pointer;
     border-radius: 50%;
     width: 30px;
     height: 30px;

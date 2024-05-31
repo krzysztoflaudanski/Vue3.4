@@ -3,15 +3,15 @@ import axios from 'axios';
 import { apiUrl } from './../../config';
 
 export default createStore({
-  photosRequest: {
-    pending: false,
-    error: false,
-    success: false
-  },
   state: {
     categories: [],
     photos: [],
-    allPhotosLoaded: false,
+    photosRequest: {
+      pending: false,
+      error: false,
+      success: false
+    },
+    allPhotosLoaded: false
   },
   getters: {
     categoriesAmount(state) {
@@ -53,7 +53,7 @@ export default createStore({
       state.allPhotosLoaded = !state.allPhotosLoaded
     },
     ADD_VOTE(state, photoId) {
-      const photo = state.photos.find(p => p.id === photoId);
+      const photo = state.photos.find(p => p._id === photoId);
       if (photo) {
         photo.votes += 1;
       }
@@ -70,13 +70,14 @@ export default createStore({
     },
     async fetchPhotosFromAPI({ commit, state }, { url, page }) {
       try {
+
         if (state.allPhotosLoaded && page === 1) commit('TOGGLE_ALL_PHOTOS_LOADED')
 
         if (state.allPhotosLoaded) return false
 
         commit('START_PHOTOS_REQUEST')
         const res = await axios.get(url)
-        await new Promise((resolve) => { setTimeout(resolve, 2000) })
+        await new Promise((resolve, reject) => { setTimeout(resolve, 2000) })
         commit('END_PHOTOS_REQUEST')
 
         if (res.data.length < 12) commit('TOGGLE_ALL_PHOTOS_LOADED')
@@ -87,12 +88,15 @@ export default createStore({
         commit('ERROR_PHOTOS_REQUEST')
       }
     },
+
     async fetchPhotos({ dispatch }, page) {
       dispatch('fetchPhotosFromAPI', { url: `${apiUrl}/photos/${page}`, page })
     },
+
     async fetchCategoryPhotos({ dispatch }, { category, page }) {
       dispatch('fetchPhotosFromAPI', { url: `${apiUrl}/photos/${category}/${page}`, page })
     },
+
     async addVote({ commit }, photoId) {
       commit('START_PHOTOS_REQUEST');
       try {
