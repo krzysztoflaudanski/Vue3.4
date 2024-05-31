@@ -9,18 +9,18 @@
 </template>
 
 <script>
-import { mapState } from 'vuex'
+import { mapState } from 'vuex';
 import Button from 'primevue/button';
 
 export default {
     name: 'CategoriesList',
     computed: {
         ...mapState({
-            categories: state => state.categories
+            categories: state => state.categories.categories
         })
     },
     components: {
-        Button,
+        Button
     }
 };
 </script>

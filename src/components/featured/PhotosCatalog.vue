@@ -32,41 +32,42 @@ export default {
     },
     computed: {
         ...mapState({
-            photos: state => state.photos,
-            photosRequest: state => state.photosRequest
+            photos: state => state.photos.photos,
+            photosRequest: state => state.photos.photosRequest
         })
     },
-    created() {
-        this.loadPhotos();
-    },
-    methods: {
+
+created() {
+    this.loadPhotos();
+},
+methods: {
         ...mapActions(['addVote', 'fetchCategoryPhotos']),
         loadPhotos() {
-            this.currentPage++;
+        this.currentPage++;
 
-            if (this.category) {
-                console.log(this.category)
-                this.$store.dispatch('fetchCategoryPhotos', { category: this.category, page: this.currentPage });
-            } else {
-                this.$store.dispatch('fetchPhotos', this.currentPage);
-            }
-        },
-        prepareScroll() {
-            this.$refs.catalog.addEventListener('scroll', () => { this.handleScroll() })
-        },
-        handleScroll() {
-            const elem = this.$refs.catalog
-            const bottomOfWindow = Math.ceil(elem.scrollTop) >= (elem.scrollHeight - elem.offsetHeight)
-
-            if (bottomOfWindow) this.loadPhotos()
-        },
-        handleVote(photoId) {
-            this.addVote(photoId);
+        if (this.category) {
+            console.log(this.category)
+            this.$store.dispatch('fetchCategoryPhotos', { category: this.category, page: this.currentPage });
+        } else {
+            this.$store.dispatch('fetchPhotos', this.currentPage);
         }
     },
-    components: {
-        PhotoList, ProgressSpinner
+    prepareScroll() {
+        this.$refs.catalog.addEventListener('scroll', () => { this.handleScroll() })
+    },
+    handleScroll() {
+        const elem = this.$refs.catalog
+        const bottomOfWindow = Math.ceil(elem.scrollTop) >= (elem.scrollHeight - elem.offsetHeight)
+
+        if (bottomOfWindow) this.loadPhotos()
+    },
+    handleVote(photoId) {
+        this.addVote(photoId);
     }
+},
+components: {
+    PhotoList, ProgressSpinner
+}
 }
 </script>
 
