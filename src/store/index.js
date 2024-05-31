@@ -11,6 +11,7 @@ export default createStore({
   state: {
     categories: [],
     photos: [],
+    allPhotosLoaded: false,
   },
   getters: {
     categoriesAmount(state) {
@@ -47,6 +48,15 @@ export default createStore({
         error: true,
         success: false
       }
+    },
+    TOGGLE_ALL_PHOTOS_LOADED(state) {
+      state.allPhotosLoaded = !state.allPhotosLoaded
+    },
+    ADD_VOTE(state, photoId) {
+      const photo = state.photos.find(p => p.id === photoId);
+      if (photo) {
+        photo.votes += 1;
+      }
     }
   },
   actions: {
@@ -58,12 +68,18 @@ export default createStore({
         console.error('Error fetching categories:', error);
       }
     },
-    async fetchPhotos({ commit }, page) {
+    async fetchPhotosFromAPI({ commit, state }, { url, page }) {
       try {
+        if (state.allPhotosLoaded && page === 1) commit('TOGGLE_ALL_PHOTOS_LOADED')
+
+        if (state.allPhotosLoaded) return false
+
         commit('START_PHOTOS_REQUEST')
-        const res = await axios.get(`${apiUrl}/photos/${page}`)
-        await new Promise((resolve, reject) => { setTimeout(resolve, 2000) })
+        const res = await axios.get(url)
+        await new Promise((resolve) => { setTimeout(resolve, 2000) })
         commit('END_PHOTOS_REQUEST')
+
+        if (res.data.length < 12) commit('TOGGLE_ALL_PHOTOS_LOADED')
 
         if (page > 1) commit('ADD_PHOTOS', res.data)
         else commit('UPDATE_PHOTOS', res.data)
@@ -71,19 +87,21 @@ export default createStore({
         commit('ERROR_PHOTOS_REQUEST')
       }
     },
-    async fetchCategoryPhotos({ commit }, { category, page }) {
+    async fetchPhotos({ dispatch }, page) {
+      dispatch('fetchPhotosFromAPI', { url: `${apiUrl}/photos/${page}`, page })
+    },
+    async fetchCategoryPhotos({ dispatch }, { category, page }) {
+      dispatch('fetchPhotosFromAPI', { url: `${apiUrl}/photos/${category}/${page}`, page })
+    },
+    async addVote({ commit }, photoId) {
+      commit('START_PHOTOS_REQUEST');
       try {
-        commit('START_PHOTOS_REQUEST');
-        const res = await axios.get(`${apiUrl}/photos/${category}/${page}`);
+        await axios.put(`${apiUrl}/photos/vote/${photoId}`);
+        commit('ADD_VOTE', photoId);
         commit('END_PHOTOS_REQUEST');
-
-        if (page > 1) {
-          commit('ADD_PHOTOS', res.data);
-        } else {
-          commit('UPDATE_PHOTOS', res.data);
-        }
-      } catch (err) {
+      } catch (error) {
         commit('ERROR_PHOTOS_REQUEST');
+        console.error('Error adding vote:', error);
       }
     }
   },

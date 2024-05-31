@@ -3,6 +3,9 @@
     <Card style="width: 180px; overflow: hidden; position: relative;">
         <template #header>
             <div class="image-container">
+                <div class="layer">
+                    <i class="pi pi-star center-star-icon"></i>
+                </div>
                 <img alt="user header" :src="image" style="object-fit: cover; width: 100%; height: 400px;" />
                 <div class="star-icon">{{ votes }}<i class="pi pi-star ml-2"></i></div>
             </div>
@@ -79,7 +82,26 @@ export default {
 .image-container {
     position: relative;
     width: 100%;
+    height: 400px;
+    overflow: hidden;
+}
+
+.layer {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
     height: 100%;
+    background-color: rgba(155, 89, 182, 0.3);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.image-container:hover .layer {
+    opacity: 1;
 }
 
 .star-icon {
@@ -96,6 +118,11 @@ export default {
     display: flex;
     align-items: center;
     justify-content: center;
+}
+
+.center-star-icon {
+    font-size: 50px;
+    color: white;
 }
 
 .card-title {
