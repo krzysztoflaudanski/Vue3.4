@@ -25,17 +25,31 @@ export default {
             currentPage: 1
         }
     },
+    props: {
+        category: {
+            type: String,
+        },
+    },
     computed: {
         ...mapState({
             photos: state => state.photos,
             photosRequest: state => state.photosRequest
         })
     },
+    created() {
+        this.loadPhotos();
+    },
     methods: {
-        ...mapActions(['addVote']),
+        ...mapActions(['addVote', 'fetchCategoryPhotos']),
         loadPhotos() {
             this.currentPage++;
-            this.$store.dispatch('fetchPhotos', this.currentPage);
+
+            if (this.category) {
+                console.log(this.category)
+                this.$store.dispatch('fetchCategoryPhotos', { category: this.category, page: this.currentPage });
+            } else {
+                this.$store.dispatch('fetchPhotos', this.currentPage);
+            }
         },
         prepareScroll() {
             this.$refs.catalog.addEventListener('scroll', () => { this.handleScroll() })

@@ -7,6 +7,11 @@ const routes = [
     name: 'home',
     component: HomePage
   },
+  {
+    path: '/photos/:category',
+    name: 'CategoryPhotosPage',
+    component: () => import('@/pages/CategoryPhotosPage.vue')
+  }
 ]
 
 const router = createRouter({
