@@ -11,7 +11,7 @@
                 <h1 v-text="' share your moments'" class="text-lg" />
             </div>
             <div class="block ml-auto mr-3">
-                <router-link :to="{ path: '/' }">
+                <router-link :to="{ path: '/add-photo' }">
                     <Button label="+ Submit" class="p-button-raised" rounded></Button>
                 </router-link>
             </div>
