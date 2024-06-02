@@ -41,14 +41,15 @@ export default {
         this.loadPhotos();
     },
     methods: {
-        ...mapActions('photos', ['addVote', 'fetchCategoryPhotos']),
+        ...mapActions('photos', ['addVote', 'fetchCategoryPhotos', 'fetchPhotos']),
         loadPhotos() {
-            this.currentPage++;
-
             if (this.category) {
-                this.$store.dispatch('fetchCategoryPhotos', { category: this.category, page: this.currentPage });
+                this.fetchCategoryPhotos({ category: this.category, page: this.currentPage });
+                this.currentPage++;
             } else {
-                this.$store.dispatch('fetchPhotos', this.currentPage);
+                this.fetchPhotos(this.currentPage);
+                //this.$store.dispatch('fetchPhotos', this.currentPage);
+                this.currentPage++;
             }
         },
         prepareScroll() {
