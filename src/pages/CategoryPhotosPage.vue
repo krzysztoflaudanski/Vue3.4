@@ -2,6 +2,7 @@
 <div style="min-height: 300px;">
     <PageTitle :pageTitle="category"></PageTitle>
     <PhotosCatalog :category="category"></PhotosCatalog>
+    <router-view></router-view> <!-- Dodaj router-view -->
 </div>
 </template>
 
@@ -19,6 +20,11 @@ export default {
     },
     created() {
         this.category = this.$route.params.category;
+    },
+    watch: {
+        '$route.params.category'(newCategory) {
+            this.category = newCategory;
+        }
     }
 }
 </script>

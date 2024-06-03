@@ -10,7 +10,8 @@ export default {
       error: false,
       success: false
     },
-    allPhotosLoaded: false
+    allPhotosLoaded: false,
+    singlePhoto: null,
   },
   mutations: {
     UPDATE_PHOTOS(state, data) {
@@ -48,9 +49,27 @@ export default {
       if (photo) {
         photo.votes += 1;
       }
+    }, SET_SINGLE_PHOTO(state, photo) {
+      state.singlePhoto = photo;
     }
   },
+
   actions: {
+    async fetchSinglePhoto({ commit }, photoId) {
+      commit('START_PHOTOS_REQUEST'); // Rozpocznij żądanie
+
+      try {
+        const res = await axios.get(`${apiUrl}/photos/id/${photoId}`);
+
+        commit('SET_SINGLE_PHOTO', res.data);
+        console.log(res.data) // Ustaw pojedyncze zdjęcie
+        commit('END_PHOTOS_REQUEST'); // Zakończ żądanie
+      } catch (error) {
+        commit('ERROR_PHOTOS_REQUEST'); // Obsłuż błąd żądania
+        console.error('Error fetching single photo:', error);
+      }
+    },
+
     async fetchPhotosFromAPI({ commit, state }, { url, page }) {
       try {
         if (state.allPhotosLoaded && page === 1) commit('TOGGLE_ALL_PHOTOS_LOADED')

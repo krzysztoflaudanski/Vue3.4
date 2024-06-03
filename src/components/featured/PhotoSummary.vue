@@ -12,12 +12,16 @@
         </template>
         <template #title>
             <div class="card-title" style="height:40px">
-                {{ title }}
+                <router-link :to="`/photos/${category}/${id}`" class="photo-details-link">
+                    {{ title }}
+                </router-link>
             </div>
         </template>
         <template #subtitle>
             <div class="author">
-                by {{ author }}
+                <router-link :to="`/photos/${category}/:id`" class="photo-details-link">
+                    by {{ author }}
+                </router-link>
             </div>
         </template>
         <template #footer>
@@ -88,6 +92,12 @@ export default {
 </script>
 
 <style scoped>
+.photo-details-link {
+    text-decoration: none;
+    transition: none;
+    color: inherit
+}
+
 .photo-summary {
     padding: 10px;
     margin-bottom: 20px;
