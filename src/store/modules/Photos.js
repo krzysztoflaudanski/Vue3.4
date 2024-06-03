@@ -45,6 +45,7 @@ export default {
       state.allPhotosLoaded = !state.allPhotosLoaded
     },
     ADD_VOTE(state, photoId) {
+      console.log('tralala')
       const photo = state.photos.find(p => p._id === photoId);
       if (photo) {
         photo.votes += 1;
@@ -56,16 +57,13 @@ export default {
 
   actions: {
     async fetchSinglePhoto({ commit }, photoId) {
-      commit('START_PHOTOS_REQUEST'); // Rozpocznij żądanie
-
+      commit('START_PHOTOS_REQUEST');
       try {
         const res = await axios.get(`${apiUrl}/photos/id/${photoId}`);
-
         commit('SET_SINGLE_PHOTO', res.data);
-        console.log(res.data) // Ustaw pojedyncze zdjęcie
-        commit('END_PHOTOS_REQUEST'); // Zakończ żądanie
+        
       } catch (error) {
-        commit('ERROR_PHOTOS_REQUEST'); // Obsłuż błąd żądania
+        commit('ERROR_PHOTOS_REQUEST'); 
         console.error('Error fetching single photo:', error);
       }
     },

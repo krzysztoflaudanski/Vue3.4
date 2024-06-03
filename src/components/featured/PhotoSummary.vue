@@ -20,7 +20,12 @@
         <template #subtitle>
             <div class="author">
                 <router-link :to="`/photos/${category}/:id`" class="photo-details-link">
-                    by {{ author }}
+                    by {{ author }}{{ isDescription }}
+                    <div v-show="isDescription">
+<Divider></Divider>
+                        {{ description }}
+
+                    </div>
                 </router-link>
             </div>
         </template>
@@ -37,6 +42,7 @@
 import Button from 'primevue/button';
 import { imagesUrl } from './../../../config.js';
 import Card from 'primevue/card';
+import Divider from 'primevue/divider';
 
 export default {
     name: 'PhotoSummary',
@@ -68,6 +74,9 @@ export default {
         votes: {
             type: Number,
             required: true
+        },
+        isDescription: {
+            type: Boolean
         }
     },
     computed: {
@@ -86,7 +95,7 @@ export default {
         }
     },
     components: {
-        Card, Button
+        Card, Button, Divider
     }
 };
 </script>
