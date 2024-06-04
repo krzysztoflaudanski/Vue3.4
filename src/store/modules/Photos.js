@@ -45,7 +45,6 @@ export default {
       state.allPhotosLoaded = !state.allPhotosLoaded
     },
     ADD_VOTE(state, photoId) {
-      console.log('tralala')
       const photo = state.photos.find(p => p._id === photoId);
       if (photo) {
         photo.votes += 1;
