@@ -45,7 +45,10 @@
             <Button class="p-button-rounded p-button-success" type="submit" label="Add" icon="pi pi-plus" />
         </div>
         <div class="col my-2">
-            <ImageUpload ref="imageUpload" @choose="handleFileChoose" />
+            <Field class="p-col" v-slot="{ field }" rules="required|ext:png,jpg" name="image">
+                <span class="redError">{{ errors.image }}</span>
+                <ImageUpload v-bind="field" @choose="handleFileChoose" />
+            </Field>
         </div>
     </Form>
 </div>
@@ -63,16 +66,13 @@ import Message from 'primevue/message';
 import { mapState } from 'vuex';
 import { apiUrl } from './../../../config';
 import { Form, Field } from 'vee-validate';
-import { required, min, max } from '@vee-validate/rules';
+import { required, min, max, ext } from '@vee-validate/rules';
 import { defineRule } from 'vee-validate';
 
-
-// defineRule('required', required)
-// defineRule('min', min)
-// defineRule('max', max)
 defineRule('required', (value) => required(value) || 'This field is so so required...')
 defineRule('min', (value, params) => min(value, params) || `It should be longer than ${params}`)
 defineRule('max', (value, params) => max(value, params) || `It should be shorter than ${params}`)
+defineRule('ext', (value, params) => ext(value, params) || `You should use one of these extensions: ${params}`)
 
 export default {
     components: {
