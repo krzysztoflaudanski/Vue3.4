@@ -35,11 +35,6 @@ export default {
 }
 </style> -->
 
-
-Jasne, oto Twój komponent przerobiony z Options API na Composition API:
-
-vue
-Skopiuj kod
 <template>
 <div class="photo-list p-grid">
     <PhotoSummary class="sm:col-6 lg:col-2 md:col-3" v-for="photo in photos" :key="photo._id" :id="photo._id"
